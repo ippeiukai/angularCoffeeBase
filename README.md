@@ -195,6 +195,13 @@ a bucket for the instance's (conceptually) private variables.
 Please note the hyphens
 (due to Bower package names can "only contain lower case a through z, 0 through 9, dots, dashes, and underscores").
 
+## Compatibility
+
+- AngularJS 1.3.x
+- CoffeeScript 1.8 and above
+
+Essentially, no IE8 support.
+
 ## TODO (any contribution appreciated)
 
 - unit testing
