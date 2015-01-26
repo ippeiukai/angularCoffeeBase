@@ -24,7 +24,7 @@ angularCoffeeBase.delegates = (klass) ->
     propertiesAndMethods.forEach (delegated) ->
       if delegated.substr(-2) == '()'
         do (methodName = delegated.substring(0, delegated.length - 2)) =>
-          klass::[methodName] = (args...) -> getDelegatee.call(@)[methodName](args)
+          klass::[methodName] = (args...) -> getDelegatee.call(@)[methodName](args...)
           return#x
       else
         do (propertyName = delegated) =>
