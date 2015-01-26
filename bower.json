@@ -1,0 +1,41 @@
+{
+  "name": "angularCoffeeBase",
+  "version": "0.0.1",
+  "homepage": "https://github.com/ippeiukai/angularCoffeeBase",
+  "authors": [
+    "UKAI Ippei <ippei_ukai@mac.com>"
+  ],
+  "description": "Base classes and utility methods for writing angular app in CoffeeScript",
+  "main": "lib/angularCoffeeBase.min.js",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "angular",
+    "AngularJS",
+    "coffee",
+    "CoffeeScript",
+    "base",
+    "class",
+    "superclass",
+    "controller",
+    "service",
+    "factory",
+    "delegates",
+    "getterProperty",
+    "privates"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.3"
+  },
+  "devDependencies": {
+  }
+}
