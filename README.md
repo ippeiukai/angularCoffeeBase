@@ -186,7 +186,16 @@ a bucket for the instance's (conceptually) private variables.
           incrementCount: ->
             @_private_.count += 1
 
+## Install
+
+### Bower
+
+- `bower install angular-coffee-base`
+
+Please note the hyphens
+(due to Bower package names can "only contain lower case a through z, 0 through 9, dots, dashes, and underscores").
+
 ## TODO (any contribution appreciated)
 
-* unit testing
-* better documentation
+- unit testing
+- better documentation
