@@ -11,6 +11,8 @@ angularCoffeeBase.delegates = (klass) ->
       switch typeof delegatee
         when 'function'
           delegatee
+        when 'object'
+          -> delegatee
         when 'string'
           ->
             obj = @
