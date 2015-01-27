@@ -78,7 +78,7 @@ Following class methods are available to inherited classes:
 
 ### delegates
 
-Defines a property or method to a field or object.
+Delegates specified properties and methods to a field or an object.
 
     class MyController extends angularCoffeeBase.Controller
       @registerTo angular.module('myModule'),
@@ -193,7 +193,7 @@ a bucket for the instance's (conceptually) private variables.
 - `bower install angular-coffee-base`
 
 Please note the hyphens
-(due to Bower package names can "only contain lower case a through z, 0 through 9, dots, dashes, and underscores").
+(not camelcase due to [Bower's package name limit](https://github.com/bower/bower.json-spec#name)).
 
 ## Compatibility
 
