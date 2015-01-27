@@ -29,9 +29,7 @@ angularCoffeeBase.classFactory = (options, classDefinition) ->
     injectedNames.forEach (name, i) ->
       injectedByName[name] = injected[i]
       return#x
-    if superClassIsInjected
-      superClass = injectedByName[superClass]
-    class superClassWithInjected extends superClass
+    class superClassWithInjected extends (if superClassIsInjected then injectedByName[superClass] else superClass)
       do =>
         for name, injectedValue of injectedByName
           Object.defineProperty(@::, name, value: injectedValue, enumerable: false, writable: false)
