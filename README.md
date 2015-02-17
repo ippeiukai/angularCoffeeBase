@@ -97,8 +97,11 @@ Delegates specified properties and methods to a field or an object.
       # you can specify delegatee as a function, which will be evaluated with the instance as this.
       @delegates 'method3()', to: (-> @method3Delegate ? @myModel)
       
+      # allowNull option allows delegatee to be null or undefined (returns undefined).
+      @delegates 'method4()', 'property2', to: 'myModel.property1', allowNull: true
+      
       # you can specify 'enumerable' option. (currently only applies to properties)
-      @delegates 'property2, to: 'myModel', enumerable: false
+      @delegates 'property3, to: 'myModel', enumerable: false
 
 
 ### defineProperty
