@@ -23,19 +23,29 @@ angularCoffeeBase.delegates = (klass) ->
           throw 'delegatee not specified'
         else
           throw 'delegatee invalid type'
+    withNullAllowance = do (allowNull = !!opts['allowNull']) =>
+      (delegatee, doSomething) ->
+        if delegatee? || !allowNull
+          doSomething(delegatee)
+        else
+          delegatee # null or undefined
     propertiesAndMethods.forEach (delegated) ->
       if delegated.substr(-2) == '()'
         do (methodName = delegated.substring(0, delegated.length - 2)) =>
-          klass::[methodName] = (args...) -> getDelegatee.call(@)[methodName](args...)
+          klass::[methodName] = (args...) ->
+            withNullAllowance getDelegatee.call(@), (delegatee) ->
+              delegatee[methodName](args...)
           return#x
       else
         do (propertyName = delegated) =>
           angularCoffeeBase.defineProperty(klass) propertyName,
             enumerable: opts['enumerable'] ? true
             get: ->
-              getDelegatee.call(@)[propertyName]
+              withNullAllowance getDelegatee.call(@), (delegatee) ->
+                delegatee[propertyName]
             set: (value) ->
-              getDelegatee.call(@)[propertyName] = value
+              withNullAllowance getDelegatee.call(@), (delegatee) ->
+                delegatee[propertyName] = value
           return#x
       return#x
     return#x
