@@ -3,6 +3,7 @@
 by Ippei UKAI
 
 Provides convenient base classes and utility methods for making writing angular app in CoffeeScript easier.
+AngularJS controllers and services can now be written as a class naturally with the power of inheritance.
 
 ## base classes
 
@@ -55,13 +56,13 @@ under what name the injected objects should be available. This works with `Contr
       
       (superClass, injected) ->
         
-        injected['$log'].debug 'MyModel class'
-        
         class MyModel extends superClass
           
           constructor: (@myArgument) ->
             super
             @$log.debug 'MyModel constructor'
+          
+          injected['$log'].debug 'MyModel class'
 
 Note: `superClass` defines injected as non-enumerable instance properties in prototype.
 
