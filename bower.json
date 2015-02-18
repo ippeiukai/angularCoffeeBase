@@ -17,10 +17,12 @@
     "CoffeeScript",
     "base",
     "class",
+    "inheritance",
     "superclass",
+    "angularCoffeeBase",
     "controller",
     "service",
-    "factory",
+    "classFactory",
     "delegates",
     "getterProperty",
     "privates"
