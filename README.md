@@ -7,7 +7,7 @@ AngularJS controllers and services can now be written as a class naturally with 
 
 ## base classes
 
-### Controller
+### `angularCoffeeBase.Controller`
 
 ```coffee
     'use strict'
@@ -25,7 +25,7 @@ AngularJS controllers and services can now be written as a class naturally with 
 
 `super` defines injected as non-enumerable instance properties.
 
-### Service
+### `angularCoffeeBase.Service`
 
 ```coffee
     'use strict'
@@ -44,19 +44,18 @@ AngularJS controllers and services can now be written as a class naturally with 
 `super` defines injected as non-enumerable instance properties.
 
 #### inject as
+
 Here, I'm also demonstrating the "inject as" notation; you can mix key-value pairs in `inject` to change
 under what name the injected objects should be available. This works with `Controller` and `classFactory` as well.
 
-### classFactory (for providing class as a service)
+### `angularCoffeeBase.classFactory` (for providing class as a service)
 
 ```coffee
     'use strict'
     
     angularCoffeeBase.classFactory
-      
       registerTo: 'myModule'
       name: 'MyModel'
-      extends: 'SuperModel'
       inject: [ '$log' ]
       
       (superClass, injected) ->
@@ -75,25 +74,44 @@ under what name the injected objects should be available. This works with `Contr
 
 Note: `superClass` defines injected as non-enumerable instance properties in prototype.
 
-#### extends
-`extends` is optional, and, if specified, utility methods are not automatically available.
-You can specify a class directly, but if you specify a string, it will be included in $inject automatically.
+#### `extends` option
 
+```coffee
+    'use strict'
+    
+    angularCoffeeBase.classFactory
+      registerTo: 'myModule'
+      name: 'MyModel'
+      extends: 'MySuperModel'
+      (superClass, injected) ->
+        
+        class MyModel extends superClass
+            
+          constructor: ->
+            super
+```
+
+`extends` allows your class to inherit from a superclass.
+The value can be a class, but if you specify a string, it will be included in `$inject` to be injected by the module.
+
+If `extends` is specified, utility methods are not automatically available.
 If you are writing your superclass yourself, it is recommended that you define the superclass with `classFactory` as well.
-That way, `angular` can load your classes with injection, and you get the utility methods inherited.
+That way, you get the utility methods inherited.
 
 ## utility methods
 
 Following class methods are available to inherited classes:
 
-### delegates
+### `delegates`
 
 Delegates specified properties and methods to a field or an object.
 
 ```coffee
     class MyController extends angularCoffeeBase.Controller
+    
       @registerTo 'myModule',
         name: 'MyController'
+        inject: [ '$scope' ]
       
       constructor: ->
         super
@@ -115,7 +133,7 @@ Delegates specified properties and methods to a field or an object.
       @delegates 'property3, to: 'myModel', enumerable: false
 ```
 
-### defineProperty
+### `defineProperty`
 
 Basically, this is [Object.defineProperty()](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 with the prototype of the class as first argument.
@@ -124,6 +142,7 @@ with the prototype of the class as first argument.
     angularCoffeeBase.classFactory
       registerTo: 'myModule'
       name: 'MyModel'
+      inject: []
       (superClass, injected) ->
       
         class MyModel extends superClass
@@ -138,14 +157,15 @@ with the prototype of the class as first argument.
             value: 'meeee'
 ```
 
-
 Note: the property is defined on the prototype. You get an unexpected result if you did the following:
 
 ```coffee
     angularCoffeeBase.classFactory
       registerTo: 'myModule'
       name: 'MyModel'
+      inject: []
       (superClass, injected) ->
+      
         class MyModel extends superClass
           
           constructor: ->
@@ -158,7 +178,7 @@ Note: the property is defined on the prototype. You get an unexpected result if 
             value: {}
 ```
 
-### getterProperty
+### `getterProperty`
 
 Defines a readonly property.
 
@@ -166,6 +186,7 @@ Defines a readonly property.
     angularCoffeeBase.classFactory
       registerTo: 'myModule'
       name: 'MyModel'
+      inject: []
       (superClass, injected) ->
         
         class MyModel extends superClass
@@ -183,7 +204,7 @@ Defines a readonly property.
 Default is enumerable and configurable, but you can specify an optional second argument
 (an Object with keys `enumerable` and/or `configurable` with boolean value) to change them.
 
-### privates
+### `privates`
 
 Defines an non-enumerable property of specified name (or `_private_` if unspecified) to the instances. It can be used as
 a bucket for the instance's (conceptually) private variables.
@@ -192,6 +213,7 @@ a bucket for the instance's (conceptually) private variables.
     angularCoffeeBase.classFactory
       registerTo: 'myModule'
       name: 'MyModel'
+      inject: []
       (superClass, injected) ->
         
         class MyModel extends superClass
@@ -215,11 +237,11 @@ a bucket for the instance's (conceptually) private variables.
 - `bower install angular-coffee-base`
 
 Please note the hyphens
-(not camelcase due to [Bower's package name limit](https://github.com/bower/bower.json-spec#name)).
+(not camelcase due to [Bower's package name convention](https://github.com/bower/bower.json-spec#name)).
 
 ## Compatibility
 
-- AngularJS 1.3.x
+- AngularJS 1.3.x and above (but not Angular 2)
 - CoffeeScript 1.8 and above
 
 Essentially, no IE8 support.
@@ -228,3 +250,4 @@ Essentially, no IE8 support.
 
 - unit testing
 - better documentation
+- installation other than Bower
