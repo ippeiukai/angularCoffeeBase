@@ -9,33 +9,37 @@ AngularJS controllers and services can now be written as a class naturally with 
 
 ### Controller
 
+```coffee
     'use strict'
     
     class MyController extends angularCoffeeBase.Controller
       
-      @registerTo angular.module('myModule'),
+      @registerTo 'myModule',
         name: 'MyController'
         inject: [ '$log' ]
       
       constructor: ->
         super
         @$log.debug 'MyController constructor'
+```
 
 `super` defines injected as non-enumerable instance properties.
 
 ### Service
 
+```coffee
     'use strict'
     
     class MyService extends angularCoffeeBase.Service
       
-      @registerTo angular.module('myModule'),
+      @registerTo 'myModule',
         name: 'myService'
         inject: [ '$log':'console' ]
       
       constructor: ->
         super
         @console.debug 'MyService constructor'
+```
 
 `super` defines injected as non-enumerable instance properties.
 
@@ -45,11 +49,12 @@ under what name the injected objects should be available. This works with `Contr
 
 ### classFactory (for providing class as a service)
 
+```coffee
     'use strict'
     
     angularCoffeeBase.classFactory
       
-      registerTo: angular.module('myModule')
+      registerTo: 'myModule'
       name: 'MyModel'
       extends: 'SuperModel'
       inject: [ '$log' ]
@@ -58,11 +63,15 @@ under what name the injected objects should be available. This works with `Contr
         
         class MyModel extends superClass
           
-          constructor: (@myArgument) ->
+          @greet: ->
+            # you can use injected outside the instance
+            injected.$log.debug 'Hi, this is MyModel class.'
+            
+          constructor: ->
             super
+            # instances can access injected as property of self
             @$log.debug 'MyModel constructor'
-          
-          injected['$log'].debug 'MyModel class'
+```
 
 Note: `superClass` defines injected as non-enumerable instance properties in prototype.
 
@@ -81,8 +90,9 @@ Following class methods are available to inherited classes:
 
 Delegates specified properties and methods to a field or an object.
 
+```coffee
     class MyController extends angularCoffeeBase.Controller
-      @registerTo angular.module('myModule'),
+      @registerTo 'myModule',
         name: 'MyController'
       
       constructor: ->
@@ -103,15 +113,16 @@ Delegates specified properties and methods to a field or an object.
       
       # you can specify 'enumerable' option. (currently only applies to properties)
       @delegates 'property3, to: 'myModel', enumerable: false
-
+```
 
 ### defineProperty
 
 Basically, this is [Object.defineProperty()](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
 with the prototype of the class as first argument.
 
+```coffee
     angularCoffeeBase.classFactory
-      registerTo: angular.module('myModule')
+      registerTo: 'myModule'
       name: 'MyModel'
       (superClass, injected) ->
       
@@ -125,12 +136,14 @@ with the prototype of the class as first argument.
             configurable: false
             writable: false
             value: 'meeee'
+```
 
 
 Note: the property is defined on the prototype. You get an unexpected result if you did the following:
 
+```coffee
     angularCoffeeBase.classFactory
-      registerTo: angular.module('myModule')
+      registerTo: 'myModule'
       name: 'MyModel'
       (superClass, injected) ->
         class MyModel extends superClass
@@ -143,13 +156,15 @@ Note: the property is defined on the prototype. You get an unexpected result if 
             enumerable: false
             writable: false
             value: {}
+```
 
 ### getterProperty
 
 Defines a readonly property.
 
+```coffee
     angularCoffeeBase.classFactory
-      registerTo: angular.module('myModule')
+      registerTo: 'myModule'
       name: 'MyModel'
       (superClass, injected) ->
         
@@ -163,6 +178,7 @@ Defines a readonly property.
           
           incrementCount: ->
             @_count += 1
+```
 
 Default is enumerable and configurable, but you can specify an optional second argument
 (an Object with keys `enumerable` and/or `configurable` with boolean value) to change them.
@@ -172,8 +188,9 @@ Default is enumerable and configurable, but you can specify an optional second a
 Defines an non-enumerable property of specified name (or `_private_` if unspecified) to the instances. It can be used as
 a bucket for the instance's (conceptually) private variables.
 
+```coffee
     angularCoffeeBase.classFactory
-      registerTo: angular.module('myModule')
+      registerTo: 'myModule'
       name: 'MyModel'
       (superClass, injected) ->
         
@@ -189,6 +206,7 @@ a bucket for the instance's (conceptually) private variables.
           
           incrementCount: ->
             @_private_.count += 1
+```
 
 ## Install
 
